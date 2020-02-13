@@ -31,16 +31,30 @@ server.get('/api/users/:id', (req,res) => {
      })
      .catch(err => {
         res.status(500).json({ errorMessage: "The user information could not be retrieved."});
-     })
+      })
+      
+      
+   });
+   
+   server.post('/api/users', (req,res) => {
+       console.log(req.body)
+      if(!req.body.name) res.status(400).json({ errorMessage: "Please provide name for the user." });
+      if(!req.body.bio) res.status(400).json({ errorMessage: "Please provide Bio for the user." });
+     
+      db.insert({ name:req.body.name, bio:req.body.bio})
+         .then( newUserResponse => {
+            if(newUserResponse => {
+               res.status(201).json(newUserResponse);
+            });
+         })
+         .catch(err => {
+            res.status(500).json({ errorMessage: "The user information could not be retrieved."});
 
-   
-});
-server.post('/api/users', (req,res) => {
-   
+         })
    
 });
 server.put('/api/users/:id', (req,res) => {
-   const id = req.params.id;
+   // const id = req.params.id;
    
 });
 server.delete('/api/users', (req,res) => {
