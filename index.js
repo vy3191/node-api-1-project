@@ -4,6 +4,8 @@ const db = require("./data/db");
 const server = express();
 const PORT = 8080;
 
+server.use(express.json());
+
 server.get('/api/users', (req,res) => {
    db.find()
            .then( users => {
@@ -35,7 +37,7 @@ server.get('/api/users/:id', (req,res) => {
       
       
    });
-   
+
    server.post('/api/users', (req,res) => {
        console.log(req.body)
       if(!req.body.name) res.status(400).json({ errorMessage: "Please provide name for the user." });
@@ -53,8 +55,20 @@ server.get('/api/users/:id', (req,res) => {
          })
    
 });
-server.put('/api/users/:id', (req,res) => {
-   // const id = req.params.id;
+server.put('/api/users/:id', async (req,res) => {
+     try {
+      const id = req.params.id;
+      const name = req.body.name;
+      const bio = req.body.bio;
+      const user = await db.findById(id);
+      if(user) {
+        const updatedUser =  await db.update(id,{name,id});
+        res.status(200).json(updatedUser)
+      }      
+     }catch(err) {
+        res.status(500).json({ errorMessage: "The user information could not be modified." });
+     }
+
    
 });
 server.delete('/api/users', (req,res) => {
