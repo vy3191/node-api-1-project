@@ -6,19 +6,32 @@ const PORT = 8080;
 
 server.get('/api/users', (req,res) => {
    db.find()
-           .then( response => {
-              if(response) {
-                 res.status(200).json(response)
+           .then( users => {
+              if(users) {
+                 res.status(200).json(users)
               } else {
-                 res.status(500).json({ errorMessage: "The users information could not be retrieved." })
-              }
-           })
-           .catch(err => {
-              console.log(err);
+                 res.status(404).json({msg:'Could not find the users'});
+            }
+         })
+         .catch(err => {
+            console.log(err);
+            res.status(500).json({ errorMessage: "The users information could not be retrieved." });
            })
 });
 server.get('/api/users/:id', (req,res) => {
    const id = req.params.id;
+   if(!id) res.status(400).json({msg:'User id is required'});
+   db.findById(id)
+   .then( user => {
+      if(user) {
+         res.status(200).json(user);
+      } else {         
+         res.status(404).json({ message: "The user with the specified ID does not exist." });
+        }
+     })
+     .catch(err => {
+        res.status(500).json({ errorMessage: "The user information could not be retrieved."});
+     })
 
    
 });
