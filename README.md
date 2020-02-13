@@ -51,7 +51,7 @@ Users in the database conform to the following object structure:
 
 Inside `index.js` add the code necessary to implement the following _endpoints_:
 
-| Method | URL            | Description                                                                                                                       |
+| Method | URL            | Description                                                                                                                        |
 | ------ | -------------- | --------------------------------------------------------------------------------------------------------------------------------- |
 | POST   | /api/users     | Creates a user using the information sent inside the `request body`.                                                              |
 | GET    | /api/users     | Returns an array of all the user objects contained in the database.                                                               |
